@@ -1,56 +1,62 @@
-// Given a binary string (ASCII encoded), write a function that returns the equivalent decoded text.
+// -Given a number, write a function that
+//  converts that number into a string that
+//  contains "raindrop sounds" corresponding
+//  to certain potential factors.
+// -A factor is a number that evenly divides
+//  into another number, leaving no remainder.
+// -The simplest way to test if one number
+//  is a factor of another is to use the
+//  modulo operator.
 
-// Every eight bits in the binary string represents one character on the ASCII table.
+// -Here are the rules for csRaindrop.
+//  --If the input number:
+//    ---has 3 as a factor, add "Pling" to the result.
+//    ---has 5 as a factor, add "Plang" to the result.
+//    ---has 7 as a factor, add "Plong" to the result.
+//    ---does not have any of 3, 5, or 7 as a factor,
+//       the result should be the digits of the input number.
 
 // Examples:
-// solution("011011000110000101101101011000100110010001100001") -> "lambda"
-// 01101100 -> 108 -> "l"
-// 01100001 -> 97 -> "a"
-// 01101101 -> 109 -> "m"
-// 01100010 -> 98 -> "b"
-// 01100100 -> 100 -> "d"
-// 01100001 -> 97 -> "a"
-// solution("") -> ""
-
-// Notes:
-// The input string will always be a valid binary string.
-// Characters can be in the range from "00000000" to "11111111" (inclusive).
-// In the case of an empty input string, your function should return an empty string.
+// solution(28) -> "Plong"
+// 28 has 7 as a factor, but not 3 or 5.
+// solution(30) -> "PlingPlang"
+// 30 has both 3 and 5 as factors, but not 7.
+// solution(34) -> "34"
+// 34 is not factored by 3, 5, or 7.
 
 // ==============================================
 
-const solution = (bin) => {
-  let arr = bin.split('');
-  // arr = reverseArray(arr);
-  console.log(arr);
-
-  let matrix = new Array(Math.ceil(arr.length / 8));
-  for (let i = 0; i < matrix.length; ++i) {
-    matrix[i] = new Array(8);
+const solution = (num) => {
+  let out = '';
+  const conditions = [];
+  conditions.push(num % 3 === 0);
+  conditions.push(num % 5 === 0);
+  conditions.push(num % 7 === 0);
+  if (conditions[0]) {
+    out = out + 'Pling';
   }
-
-  let count = 0;
-  for (let i = 0; i < arr.length / 8; ++i) {
-    for (let j = 7; j >= 0; --j) {
-      // read in each 8-bits in reversed order
-      matrix[i][j] = Number(arr[count++]);
-    }
+  if (conditions[1]) {
+    out = out + 'Plang';
   }
-  console.log(matrix);
-
-  let out = [];
-  for (let i = 0; i < matrix.length; ++i) {
-    let sum = 0;
-    for (let j = 0; j < 8; ++j) {
-      let bit = matrix[i][j];
-      sum += bit * 2 ** j;
-    }
-    const ascii = String.fromCharCode(sum);
-    out.push(ascii);
+  if (conditions[2]) {
+    out = out + 'Plong';
   }
-  return out.join('');
+  if (!conditions[0] && !conditions[1] && !conditions[2]) {
+    return num.toString();
+  }
+  return out;
 };
 
-// solution("011011000110000101101101011000100110010001100001") -> "lambda"
-const x = solution('011011000110000101101101011000100110010001100001');
-console.log(x);
+// ==============================================
+
+// solution(28) -> "Plong"
+// 28 has 7 as a factor, but not 3 or 5.
+console.log(solution(28));
+
+// solution(30) -> "PlingPlang"
+// 30 has both 3 and 5 as factors, but not 7.
+console.log(solution(30));
+
+// solution(34) -> "34"
+// 34 is not factored by 3, 5, or 7.
+console.log(solution(34));
