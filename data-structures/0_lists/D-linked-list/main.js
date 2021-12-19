@@ -102,18 +102,18 @@ export default class LinkedList {
 
 // ==============================================
 
-// const ll = new LinkedList();
+const ll = new LinkedList();
 
-// ll.append(5);
-// ll.append(7);
-// ll.append(4);
-// console.log(ll.toArray());
+ll.append(5);
+ll.append(0);
+ll.append(4);
+console.log(ll.toArray());
 
-// ll.prepend(0);
-// console.log(ll.toArray());
+ll.prepend(0);
+console.log(ll.toArray());
 
-// ll.delete(0);
-// console.log(ll.toArray());
+ll.delete(0);
+console.log(ll.toArray());
 
 // ll.delete(7);
 // console.log(ll.toArray());
