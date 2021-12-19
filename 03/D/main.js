@@ -31,8 +31,7 @@ function solution(str) {
   const unique_buckets = buckets.filter((bucket) => bucket.length === 1);
   if (unique_buckets.length > 0) {
     const idxs = unique_buckets.map((arr) => arr[0].idx);
-    const min_idx = Math.min(...idxs);
-    return min_idx >= 0 ? min_idx : -1;
+    return Math.min(...idxs);
   } else {
     return -1;
   }
