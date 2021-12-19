@@ -4,8 +4,10 @@
 
 class HashTable {
   constructor() {
-    this.size = 16;
-    this.buckets = Array(this.size).fill(null);
+    this.size = 8;
+    this.buckets = Array(this.size)
+      .fill(null)
+      .map(() => []);
   }
 
   // -Add a new key-value pair
@@ -20,12 +22,27 @@ class HashTable {
 
   set(key, value) {
     const hashKey = this.hash(key);
-    this.buckets[hashKey] = value;
+    // this.buckets[hashKey] = value;
+    const bucket_arr = this.buckets[hashKey]; // {key, value}[]
+
+    // -We have the array.
+    // -Look in the array and see if the element based on the key.
+    // -If the key exists in the array of objects, then over-write its value.
+    // -Else, push the key-value pair onto the array.
+    const stored_elem = bucket_arr.find((elem) => elem.key === key);
+    if (stored_elem) {
+      stored_elem.val = value;
+    } else {
+      bucket_arr.push({ key, val: value });
+    }
   }
 
   get(key) {
     const hashKey = this.hash(key);
-    return this.buckets[hashKey];
+    // return this.buckets[hashKey];
+    const arr = this.buckets[hashKey];
+    const stored_elem = arr.find((elem) => elem.key === key);
+    return stored_elem;
   }
 
   showInfo() {
