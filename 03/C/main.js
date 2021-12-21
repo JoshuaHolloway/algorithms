@@ -29,8 +29,8 @@ const createHashMap = (str) => {
 
 function solution(str_1, str_2) {
   // Step 1: Create hash map with chaining to count number of occurences of each character (for both input strings)
-  const map1 = createHashMap([...str_1].sort());
-  const map2 = createHashMap([...str_2].sort());
+  const map1 = createHashMap(str_1);
+  const map2 = createHashMap(str_2);
 
   // Step 2: Compare the two hash-maps to determine which character has been added
 
