@@ -12,48 +12,42 @@
 // Notes:
 // str_1 and str_2 both consist of only lowercase alpha characters.
 
+const createHashMap = (str) => {
+  let m = {};
+  for (char of str) {
+    if (m[char]?.length > 0) {
+      // console.log('char: ', char, '\tm[char]: ', m[char]);
+      m[char].push(char);
+    } else {
+      m[char] = [char];
+    }
+  }
+  return m;
+};
+
 // ==============================================
 
 function solution(str_1, str_2) {
-  // Assumptions:
-  //  -The first array has all unique characters.
-  //    --THIS ASSUMPTION IS WRONG!!!
+  // Step 1: Create hash map with chaining to count number of occurences of each character (for both input strings)
+  const map1 = createHashMap([...str_1].sort());
+  const map2 = createHashMap([...str_2].sort());
 
-  // Step 1: Find unique characters in each array
-  let map1 = {};
-  for (char of str_1) {
-    map1[char] = char;
-  }
+  // Step 2: Compare the two hash-maps to determine which character has been added
 
-  let map2 = {};
-  let non_unique_char;
-  for (char of str_2) {
-    if (map2[char]) {
-      non_unique_char = char;
-    }
-
-    map2[char] = char;
-  }
-
-  console.log('map1: ', map1, '\tmap2: ', map2);
-
-  // Step 2: Convert to arrays for easier comparison in following steps
-  const arr1 = Object.values(map1);
-  const arr2 = Object.values(map2);
-
-  // Step 3: Handle edge case of same number unique elements (general case of first edge-case).
-  //         -The added character must be the duplicate element of str_2 (under assumption of str_1 has unique characters)
-  if (arr1.length === arr2.length) {
-    return non_unique_char;
-  }
-
-  // Step 4: Handle the general case (if charcter added in str_2 is not in str_1)
-  //         (find the character that exists in str_2 but not in str_1)
-  for (let char in map2) {
-    if (map1[char] !== map2[char]) {
-      return char;
+  // -map2 is longer by 1
+  let diff = '';
+  for (char in map2) {
+    if (map1[char]) {
+      if (map2[char].length > map1[char].length) {
+        diff = char;
+        break;
+      }
+    } else {
+      diff = char;
+      break;
     }
   }
+  return diff;
 }
 
 // ==============================================
