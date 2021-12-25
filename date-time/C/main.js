@@ -21,3 +21,13 @@ const num_days_in_month = (y, m) => new Date(y, m, 0).getDate();
 console.log('num_days_in_month(2021, 12): ', num_days_in_month(2021, 12));
 console.log('num_days_in_month(2020, 1): ', num_days_in_month(2020, 2));
 console.log('num_days_in_month(2021, 1): ', num_days_in_month(2021, 2));
+
+// ==============================================
+
+// -map date to day of week:   date (Date) -> day (str)
+const date2day = (date) =>
+  ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][date.getDay()];
+
+// ==============================================
+
+console.log('date2day(date_2): ', date2day(date_2));
