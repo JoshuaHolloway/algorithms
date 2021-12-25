@@ -1,15 +1,3 @@
-// Convert 24-hour (military) time to 12-hr (AM/PM) time
-
-// ==============================================
-
-const f = (time_24) => {
-  // Input  [number]: 12
-  // Output [string]: '12 AM'
-
-  const date = new Date();
-  return date;
-};
-
 // ==============================================
 
 // -When called as a constructor, returns a new Date object.
