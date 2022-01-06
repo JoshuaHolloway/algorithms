@@ -36,7 +36,7 @@ const f = (arr) => {
 
   for (key in table) {
     // console.log(`[${key}]: ${table[key]}`);
-    if (table[key] === 1) return key;
+    if (table[key] === 1) return Number(key);
   }
 };
 
