@@ -21,7 +21,6 @@ class Table {
   constructor(N) {
     this.N = N;
     this.table = new Array(N);
-    for (let i = 0; i < N; ++i) this.table[i] = null;
   }
 
   h(str) {
@@ -32,17 +31,21 @@ class Table {
   }
 
   insert(key, value) {
-    const key_idx = this.h(key);
-    if (this.table[key_idx]) {
-      this.table[key_idx].push(value);
-    } else {
-      this.table[key_idx] = [value];
-    }
-    return this.table;
+    const idx = this.h(key);
+    if (this.table[idx]) this.table[idx].push({ key, value });
+    else this.table[idx] = [{ key, value }];
   }
 
   lookup(key) {
-    return this.table[this.h(key)];
+    const idx = this.h(key);
+    if (this.table[idx]) {
+      // -search the array for the key
+      for (let j = 0; j < this.table[idx].length; ++j) {
+        if (this.table[idx][j].key === key) {
+          return this.table[idx][j].value;
+        }
+      }
+    }
   }
 }
 
@@ -55,7 +58,7 @@ console.log(hash_func('Aa', 2)); // 65 + 97 = 162
 
 // ==============================================
 
-const ht = new Table(4);
+const ht = new Table(3);
 ht.insert('A', 'A');
 ht.insert('a', 'a');
 ht.insert('b', 'b');
