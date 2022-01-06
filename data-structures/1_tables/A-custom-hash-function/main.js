@@ -47,22 +47,38 @@ class Table {
       }
     }
   }
+
+  delete(key) {
+    const idx = this.h(key);
+    if (this.table[idx]) {
+      // -search the array for the key
+      for (let j = 0; j < this.table[idx].length; ++j) {
+        if (this.table[idx][j].key === key) {
+          this.table[idx].splice(j, 1); // (start, delete_count) : in-place
+        }
+      }
+    }
+  }
 }
 
 // ==============================================
 
 console.log(utf16_encoding('A')); // 65   ---   A in ASCII === A in UTF-8 === A in UTF-16 === binary (100 0001)_2 = hex (0x41)_16 = decimal (64+1    = 65)_10
 console.log(utf16_encoding('a')); // 97   ---   a in ASCII === a in UTF-8 === a in UTF-16 === binary (110 0001)_2 = hex (0x61)_16 = decimal (64+32+1 = 97)_10
-
-console.log(hash_func('Aa', 2)); // 65 + 97 = 162
+console.log(hash_func('Aa', 2)); // 65 + 97 = 162 => 162 % 2 === 0
 
 // ==============================================
 
-const ht = new Table(3);
+const ht = new Table(4);
 ht.insert('A', 'A');
 ht.insert('a', 'a');
 ht.insert('b', 'b');
+// console.log('table: ', ht.table);
+// console.log("ht.lookup('A'): ", ht.lookup('A'));
+// console.log("ht.lookup('a'): ", ht.lookup('a'));
+// console.log("ht.lookup('b'): ", ht.lookup('b'));
+
+ht.delete('a');
+
+console.clear();
 console.log('table: ', ht.table);
-console.log("ht.lookup('A'): ", ht.lookup('A'));
-console.log("ht.lookup('a'): ", ht.lookup('a'));
-console.log("ht.lookup('b'): ", ht.lookup('b'));
