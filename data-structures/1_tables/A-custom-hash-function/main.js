@@ -55,10 +55,9 @@ class Table {
 
   insert(key, value) {
     const idx = this.h2(key);
-    if (this.buckets[idx]) this.buckets[idx].push({ key, value });
-    else this.buckets[idx] = [{ key, value }];
-
-    // this.buckets[idx].push({ key, value });
+    // if (this.buckets[idx]) this.buckets[idx].push({ key, value });
+    // else this.buckets[idx] = [{ key, value }];
+    this.buckets[idx].push({ key, value });
     this.updateSize('increase');
   }
 
@@ -79,7 +78,7 @@ class Table {
   // --------------------------------------------
 
   delete(key) {
-    const idx = this.h(key);
+    const idx = this.h2(key);
     if (this.buckets[idx].length > 0) {
       // -search the array for the key
       for (let j = 0; j < this.buckets[idx].length; ++j) {
@@ -87,10 +86,7 @@ class Table {
           this.buckets[idx].splice(j, 1); // (start, delete_count) : in-place
         }
       }
-      --this.item_count;
-      // TODO: Evaluate Load Facter
-      // TODO:  -If too large then double size
-      // TODO:  -If too small then halve size
+      this.updateSize('decrease');
     }
   }
 
@@ -108,14 +104,13 @@ class Table {
         // -Double size
         this.resize(2 * this.N);
       }
-    }
-    // else if (type === 'decrease') {
-    //   --this.item_count;
-    //   if (this.getLoadFactor() < 0.3) {
-    //     // -Halve size
-    //     this.resize(Math.ceil(0.5 * this.N));
-    //   }
-    // } else throw new Error('updateSize()');
+    } else if (type === 'decrease') {
+      --this.item_count;
+      if (this.getLoadFactor() < 0.3) {
+        // -Halve size
+        this.resize(Math.round(0.5 * this.N));
+      }
+    } else throw new Error('updateSize()');
   }
 
   // --------------------------------------------
@@ -130,6 +125,7 @@ class Table {
     // -DEBUGGING:
     let debug_buckets = [...this.buckets];
     console.log(
+      '----------------------------\n',
       'begin resize \tload-factor: ',
       this.getLoadFactor(),
       '\nbuckets BEFORE resize: ',
@@ -167,7 +163,8 @@ class Table {
       'resize complete \tload-factor: ',
       this.getLoadFactor(),
       '\nbuckets After resize: ',
-      debug_buckets
+      debug_buckets,
+      '\n----------------------------'
     );
   }
 
@@ -186,39 +183,47 @@ const ht = new Table(8);
 ht.insert('A', 'A');
 // console.log('ht.buckets: ', ht.buckets);
 
-ht.insert('a', 'a');
-ht.insert('b', 'b');
-ht.insert('c', 'c');
-ht.insert('d', 'd');
-ht.insert('e', 'e');
-ht.insert('f', 'f');
-ht.insert('g', 'g');
-ht.insert('h', 'h');
-ht.insert('i', 'i');
-ht.insert('j', 'j');
-ht.insert('k', 'k');
-ht.insert('l', 'l');
-ht.insert('m', 'm');
-ht.insert('n', 'n');
-ht.insert('o', 'o');
-ht.insert('p', 'p');
-ht.insert('q', 'q');
-ht.insert('r', 'r');
-ht.insert('s', 's');
-ht.insert('t', 't');
-ht.insert('u', 'u');
-ht.insert('v', 'v');
-ht.insert('w', 'w');
-ht.insert('x', 'x');
-ht.insert('y', 'y');
-ht.insert('z', 'z');
+const alphabet = [
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+  'h',
+  'i',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'o',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'u',
+  'v',
+  'w',
+  'x',
+  'y',
+  'z',
+];
+
+for (let i = 0; i < alphabet.length; ++i) {
+  ht.insert(alphabet[i], alphabet[i]);
+}
 
 // console.log('table: ', ht.table);
 // console.log("ht.lookup('A'): ", ht.lookup('A'));
 // console.log("ht.lookup('a'): ", ht.lookup('a'));
 // console.log("ht.lookup('b'): ", ht.lookup('b'));
 
-// ht.delete('a');
+for (let i = 0; i < alphabet.length; ++i) {
+  ht.delete(alphabet[i], alphabet[i]);
+}
 
 // console.clear();
 // console.log(
