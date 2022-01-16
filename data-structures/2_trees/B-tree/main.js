@@ -11,6 +11,8 @@ class Node {
     // new implicitly returns this
   }
 
+  // --------------------------------------------
+
   addNode(value) {
     const segments = value.split('/');
     // /x/y/z.txt
@@ -50,8 +52,48 @@ class Node {
     }
   }
 
-  removeNode(index) {
-    this.children.splice(index, 1); // remove the node for this index
+  // --------------------------------------------
+
+  removeNode(value) {
+    console.log('value: ', value.split('/'));
+
+    const segments = value.split('/');
+
+    if (segments.length === 0) {
+      return;
+    } else if (segments.length === 1) {
+      // -search children for value
+      const existingNodeIndex = this.children.findIndex(
+        (child) => (child.vaue = value)
+      );
+
+      // -.findIndex() returns -1 if not found
+      if (existingNodeIndex < 0) {
+        throw new Error('Could not find matching value!');
+      } else {
+        // -Node found.
+        // -Splice that bitch.
+        this.children.splice(existingNodeIndex, 1); // mutate
+      }
+    } else if (segments.length > 1) {
+      // -Search children for left-most string in segments: string[]
+      const existingChildNode = this.children.find(
+        (child) => child.value === segments[0]
+      );
+
+      // .find() returns undefined if not found
+      if (!existingChildNode) {
+        throw new Error(
+          'Could not find matching path! Path segment: ',
+          segments[0]
+        );
+      }
+
+      // -Found node
+      // -Recursively call current method.
+      // -Pass in the segments: string[] = [ segments[1], ..., segments[N-1] ]
+      existingChildNode.removeNode(segments.slice(1).join('/'));
+    }
   }
 }
 
@@ -66,11 +108,16 @@ class Tree {
     this.root.addNode(path);
   }
 
-  remove(path) {}
+  remove(path) {
+    this.root.removeNode(path);
+  }
 }
 
 // ==============================================
 
 const file_system = new Tree('/');
 file_system.add('x/y/z.txt');
+file_system.add('x/y2/cod.exe');
+file_system.remove('x/y/z.txt');
+
 console.log(file_system);
