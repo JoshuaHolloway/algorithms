@@ -16,7 +16,7 @@ class Node {
   }
 
   removeNode(index) {
-    this.children.splice(index, 1);
+    this.children.splice(index, 1); // remove the node for this index
   }
 }
 
@@ -33,7 +33,13 @@ class Tree {
 const file_system = new Tree('/');
 const dev_node = file_system.root.addNode('/dev');
 
-dev_node.node.addNode('index.js');
-dev_node.node.addNode('styles.css');
-dev_node.node.addNode('index.html');
+console.log(dev_node.node.addNode('index.js'));
+console.log(dev_node.node.addNode('styles.css'));
+console.log(dev_node.node.addNode('index.html'));
 console.log(file_system);
+
+//               root
+//                |
+//               dev
+//         /      |      \
+// inddex.js  styles.css  index.html
