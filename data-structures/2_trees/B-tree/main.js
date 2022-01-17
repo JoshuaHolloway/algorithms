@@ -95,6 +95,26 @@ class Node {
       existingChildNode.removeNode(segments.slice(1).join('/'));
     }
   }
+
+  // --------------------------------------------
+
+  find(value) {
+    console.log(this);
+
+    // Depth-first
+    for (const child of this.children) {
+      if (child.value === value) {
+        return child;
+      }
+
+      const nestedChildNode = child.find(value);
+      if (nestedChildNode) {
+        return nestedChildNode;
+      }
+    } // for
+  }
+
+  // --------------------------------------------
 }
 
 // ==============================================
@@ -104,20 +124,40 @@ class Tree {
     this.root = new Node(rootValue);
   }
 
+  // --------------------------------------------
+
   add(path) {
     this.root.addNode(path);
   }
 
+  // --------------------------------------------
+
   remove(path) {
     this.root.removeNode(path);
   }
+
+  // --------------------------------------------
+
+  find(value) {
+    if (this.root.value === value) {
+      return this.root;
+    }
+    return this.root.find(value);
+  }
+
+  // --------------------------------------------
 }
 
 // ==============================================
 
 const file_system = new Tree('/');
 file_system.add('x/y/z.txt');
-file_system.add('x/y2/cod.exe');
-file_system.remove('x/y/z.txt');
+file_system.add('x/y/z2.txt');
+file_system.add('x/y2/a/b/c');
+file_system.add('x/y2/a2/b/FUCK');
+// file_system.remove('x/y/z2.txt');
+// file_system.remove('x/y/z.txt'); // should fail if not found!
+
+console.log('file_sytem.find(y) = ', file_system.find('z2'));
 
 console.log(file_system);
