@@ -98,7 +98,7 @@ class Node {
 
   // --------------------------------------------
 
-  find(value) {
+  find_depth_first(value) {
     console.log(this);
 
     // Depth-first
@@ -107,11 +107,37 @@ class Node {
         return child;
       }
 
-      const nestedChildNode = child.find(value);
+      const nestedChildNode = child.find_depth_first(value);
+      console.log('nestedChildNode: ', nestedChildNode);
+
       if (nestedChildNode) {
         return nestedChildNode;
       }
     } // for
+  }
+
+  // --------------------------------------------
+
+  find_breadth_first(value) {
+    console.log(this);
+
+    // Breadth-first
+    for (const child of this.children) {
+      // console.log('child: ', child);
+      if (child.value === value) {
+        return child;
+      }
+    } // for
+
+    for (const child of this.children) {
+      // console.log('child 2: ', child);
+      const nestedChildNode = child.find_breadth_first(value);
+      console.log('nestedChildNode: ', nestedChildNode);
+
+      if (nestedChildNode) {
+        return nestedChildNode;
+      }
+    }
   }
 
   // --------------------------------------------
@@ -138,11 +164,20 @@ class Tree {
 
   // --------------------------------------------
 
-  find(value) {
+  find_depth_first(value) {
     if (this.root.value === value) {
       return this.root;
     }
-    return this.root.find(value);
+    return this.root.find_depth_first(value);
+  }
+
+  // --------------------------------------------
+
+  find_breadth_first(value) {
+    if (this.root.value === value) {
+      return this.root;
+    }
+    return this.root.find_breadth_first(value);
   }
 
   // --------------------------------------------
@@ -154,10 +189,14 @@ const file_system = new Tree('/');
 file_system.add('x/y/z.txt');
 file_system.add('x/y/z2.txt');
 file_system.add('x/y2/a/b/c');
-file_system.add('x/y2/a2/b/FUCK');
+file_system.add('x/y2/a2/b/H');
 // file_system.remove('x/y/z2.txt');
 // file_system.remove('x/y/z.txt'); // should fail if not found!
 
-console.log('file_sytem.find(y) = ', file_system.find('z2'));
+console.log('file_sytem.find(y) = ', file_system.find_depth_first('H'));
+console.log('================================');
+console.log('file_sytem.find(y) = ', file_system.find_breadth_first('H'));
+
+// NOTE: I think I implemented Breadth-First Incorrectly!
 
 console.log(file_system);
