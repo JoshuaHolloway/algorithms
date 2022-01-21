@@ -9,6 +9,7 @@ class Node {
     this.value = value;
     this.left = null;
     this.right = null;
+    this.parent = null;
   }
 
   // --------------------------------------------
@@ -19,6 +20,7 @@ class Node {
       return;
     }
 
+    // -Add to the right node
     if (this.value < value) {
       if (this.right) {
         this.right.add(value);
@@ -27,10 +29,12 @@ class Node {
 
       // -Only do this if we are at the leaf node
       const newNode = new Node(value);
+      newNode.parent = this;
       this.right = newNode;
       return;
     }
 
+    // -Add to the left node
     if (this.value > value) {
       if (this.left) {
         this.left.add(value);
@@ -39,6 +43,7 @@ class Node {
 
       // -Only do this if we are at the leaf node
       const newNode = new Node(value);
+      newNode.parent = this;
       this.left = newNode;
       return;
     }
@@ -57,6 +62,40 @@ class Node {
 
     if (this.value > value && this.left) {
       return this.left.find(value);
+    }
+  }
+
+  // --------------------------------------------
+
+  remove(value) {
+    const identifiedNode = this.find(value);
+
+    if (!identifiedNode) {
+      throw new Error('Could not find node with that value');
+    }
+
+    if (!identifiedNode.left && !identifiedNode.right) {
+      // -Leaf node.
+      // -Removal is trivail.
+      // -Go to parent and tell it that is should not longer
+      //  point at this leaf node.
+      const identifiedParent = identifiedNode.parent;
+      identifiedParent.removeChild(identifiedNode);
+    }
+  }
+
+  // --------------------------------------------
+
+  removeChild(node) {
+    if (this.left && this.left === node) {
+      // 'remove' left child
+      this.left = null;
+      return;
+    }
+    if (this.right && this.right === node) {
+      // 'remove' right child
+      this.right = null;
+      return;
     }
   }
 
@@ -105,7 +144,10 @@ tree.add(6);
 tree.add(20);
 tree.add(25);
 tree.add(39);
+tree.remove(39);
 console.log(tree);
 console.log('6: ', tree.find(6));
 console.log('7: ', tree.find(7));
 console.log('39: ', tree.find(39));
+
+console.log('20: ', tree.find(20));
