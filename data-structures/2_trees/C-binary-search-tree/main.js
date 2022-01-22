@@ -134,17 +134,15 @@ class Tree {
 
 // ==============================================
 
-// -This implemenation doesn't work.
-
 const tree = new Tree();
 tree.add(10);
 tree.add(5);
-tree.add(2); // -Overwrites 6 on right!!!
+tree.add(2);
 tree.add(6);
 tree.add(20);
 tree.add(25);
 tree.add(39);
-tree.remove(39);
+// tree.remove(39);
 console.log(tree);
 console.log('6: ', tree.find(6));
 console.log('7: ', tree.find(7));
