@@ -50,6 +50,8 @@ class Node {
       return;
     }
 
+    const newNode = new Node(value);
+
     // -Add to the right node
     if (this.value < value) {
       if (this.right) {
@@ -58,7 +60,7 @@ class Node {
       }
 
       // -Only do this if we are at the leaf node
-      const newNode = new Node(value);
+      // const newNode = new Node(value);
       newNode.parent = this;
       this.right = newNode;
       return;
@@ -72,7 +74,7 @@ class Node {
       }
 
       // -Only do this if we are at the leaf node
-      const newNode = new Node(value);
+      // const newNode = new Node(value);
       newNode.parent = this;
       this.left = newNode;
       return;
@@ -130,6 +132,14 @@ class Node {
   }
 
   // --------------------------------------------
+
+  swap() {
+    const temp = { ...this.left };
+    this.left = this.right;
+    this.right = temp;
+  }
+
+  // --------------------------------------------
 }
 
 // ==============================================
@@ -160,21 +170,27 @@ class Tree {
   }
 
   // --------------------------------------------
+
+  swap() {
+    this.root.swap();
+    // this.root.right.swap();
+    this.root.left.swap();
+
+    console.log('this.root.left: ', this.root.left);
+    console.log('this.root.right: ', this.root.right);
+  }
 }
 
 // ==============================================
 
 const tree = new Tree();
-tree.add(10);
-tree.add(5);
-tree.add(2);
 tree.add(6);
-tree.add(20);
-tree.add(25);
-tree.add(39);
-tree.remove(39);
+tree.add(4);
+tree.add(8);
+tree.add(2);
+tree.add(5);
+tree.add(7);
+tree.add(9);
+tree.swap();
 console.log(tree);
-console.log('6: ', tree.find(6));
-console.log('7: ', tree.find(7));
-console.log('39: ', tree.find(39));
-console.log('20: ', tree.find(20));
+// console.log('20: ', tree.find(20));

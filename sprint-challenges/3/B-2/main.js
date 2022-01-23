@@ -60,40 +60,40 @@ class Node {
   // --------------------------------------------
 
   constructor(v) {
-    this.v = v;
-    this.r = null;
-    this.l = null;
+    this.value = v;
+    this.right = null;
+    this.left = null;
   }
 
   // --------------------------------------------
 
   add(v) {
-    if (this.v === null) {
-      this.v = v;
+    if (this.value === null) {
+      this.value = v;
       return;
     }
 
     // -Add to the right node
-    if (this.v < v) {
-      if (this.r) {
-        this.r.add(v);
+    if (this.value < v) {
+      if (this.right) {
+        this.right.add(v);
         return;
       }
 
       // -leaf node
-      this.r = new Node(v);
+      this.right = new Node(v);
       return;
     }
 
     // -Add to the left node
-    if (this.v > v) {
-      if (this.l) {
-        this.l.add(v);
+    if (this.value > v) {
+      if (this.left) {
+        this.left.add(v);
         return;
       }
 
       // -leaf node
-      this.l = new Node(v);
+      this.left = new Node(v);
       return;
     }
   }
@@ -106,36 +106,41 @@ class Node {
 const f = (node, min, max) => {
   let sum = 0;
   (function preorder(node) {
-    if (node === null) return;
+    if (node === null) {
+      return;
+    }
 
-    if (min <= node.v && node.v <= max) sum += node.v;
+    if (min <= node.value && node.value <= max) {
+      sum += node.value;
+    }
 
-    console.log(node.v);
-    preorder(node.l);
-    preorder(node.r);
+    preorder(node.left);
+    preorder(node.right);
   })(node);
   return sum;
 };
 
 // ==============================================
+//
+// Binary trees are already defined with this interface:
+// function Tree(x) {
+//   this.value = x;
+//   this.left = null;
+//   this.right = null;
+// }
+// function solution(root, lower, upper) {}
+const solution = f;
 
-const root = new Node(1);
-root.l = new Node(2);
-root.r = new Node(3);
-root.l.l = new Node(4);
-root.l.r = new Node(5);
+// ==============================================
+
+const root = new Node(10);
+root.add(5);
+root.add(15);
+root.add(3);
+root.add(7);
+root.add(18);
+console.log('sum of nodes between 7 and 15: ', solution(root, 7, 15));
 
 console.log(root);
-console.log('sum of nodes between 2 and 4: ', f(root, 2, 4));
-
-const r2 = new Node(10);
-r2.add(5);
-r2.add(15);
-r2.add(3);
-r2.add(7);
-r2.add(18);
-console.log('sum of nodes between 7 and 15: ', f(r2, 7, 15));
-
-console.log(r2);
 
 // ==============================================
