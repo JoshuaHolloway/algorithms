@@ -130,13 +130,20 @@ class LinkedList {
   reverse() {
     // -Initialize pointers
     let prev = null;
-    let curr = this.head;
-    let next = null;
+    let node = this.head;
+    let temp = null;
 
     //
-    while (curr !== null) {
-      next = curr.next;
+    while (node !== null) {
+      temp = node.next;
+      node.next = prev; // -Reverse the pointer
+
+      // -Move forward
+      prev = node;
+      node = temp;
     }
+    this.head = prev;
+    return prev;
   }
 
   // --------------------------------------------
@@ -144,33 +151,18 @@ class LinkedList {
 
 // ==============================================
 
-const ll = new LinkedList();
-
-ll.append(5);
-ll.append(0);
-ll.append(4);
-console.log(ll.toArray());
-
-ll.prepend(0);
-console.log(ll.toArray());
-
-ll.delete(0);
-console.log(ll.toArray());
-
-// ll.delete(7);
-// console.log(ll.toArray());
-
-// ll.delete(7);
-// console.log(ll.toArray());
-
-// ll.delete(4);
-// console.log(ll.toArray());
+const clone = (x) => ({ ...x });
 
 // ==============================================
 
-// -Historically, the main reason linked-lists were used was for memory-management.
-//  --You didn't have to specify (occupy) the size in advance.
-// -Nowdays, JS has dynamic arrays (dynamic re-sizing built-in)
-//  and memory isn't ready the primary issue in JS-apps.
-// -Linked Lists can be useful if you do a lot of insertions at the beginning
-//  of lists - linked lists are faster than arrays at this.
+const ll = new LinkedList();
+
+ll.append(1);
+ll.append(2);
+ll.append(3);
+ll.append(4);
+ll.append(5);
+console.log(clone(ll.toArray()));
+
+ll.reverse();
+console.log(clone(ll.toArray()));

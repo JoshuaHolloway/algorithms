@@ -1,51 +1,25 @@
-// -You are given the root node of a binary search tree (BST).
+// Given a binary tree, write a function that inverts the tree.
 
-// -You need to write a function that returns the sum of values
-//  of all the nodes with a value between lower and upper (inclusive).
-
-// -The BST is guaranteed to have unique values.
-
-// Example 1:
+//Example:
 // Input:
-//  root = [10, 5, 15, 3, 7, null, 18]
-//  lower = 7
-//  upper = 15
-//
-//           10
-//          / \
-//         5  15
-//       / \    \
-//      3   7    18
+//      6
+//    /   \
+//   4     8
+//  / \   / \
+// 2   5 7   9
 
 // Output:
-// 32
-
-// Example 2:
-// Input:
-//  root = [10,5,15,3,7,13,18,1,null,6]
-//  lower = 6
-//  upper = 10
-
-//            10
-//          /    \
-//        5       15
-//      / \     /   \
-//     3   7  13   18
-//   /   /
-//  1   6
-
-// Output:
-// 23
+//      6
+//    /   \
+//   8     4
+//  / \   / \
+// 9   7 5   2
 
 // [execution time limit] 4 seconds (js)
 
 // [input] tree.integer root
 
-// [input] integer lower
-
-// [input] integer upper
-
-// [output] integer
+// [output] tree.integer
 
 // -Follow up questions:
 //  --Explain the time and space complexity of your solution.
@@ -101,22 +75,22 @@ class Node {
 
 // ==============================================
 
-const f = (node, min, max) => {
-  let sum = 0;
-  (function preorder(node) {
-    if (node === null) {
-      return;
-    }
+const clone = (x) => ({ ...x });
 
-    if (min <= node.value && node.value <= max) {
-      sum += node.value;
-    }
+// ==============================================
 
-    preorder(node.left);
-    preorder(node.right);
-  })(node);
-  return sum;
-};
+function invert(node) {
+  if (node === null) {
+    return;
+  }
+
+  [node.left, node.right] = [node.right, node.left];
+
+  invert(node.left);
+  invert(node.right);
+
+  return node;
+}
 
 // ==============================================
 //
@@ -127,7 +101,7 @@ const f = (node, min, max) => {
 //   this.right = null;
 // }
 // function solution(root, lower, upper) {}
-const solution = f;
+const solution = invert;
 
 // ==============================================
 
@@ -137,8 +111,7 @@ root.add(15);
 root.add(3);
 root.add(7);
 root.add(18);
-console.log('sum of nodes between 7 and 15: ', solution(root, 7, 15));
-
-console.log(root);
+console.log('Original Tree: ', clone(root));
+console.log('Inverted Tree: ', solution(root, 7, 15));
 
 // ==============================================
